@@ -1,0 +1,19 @@
+{
+  "name": "tennis-score",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "node dev-server.js",
+    "test": "node --test",
+    "check": "biome check ./",
+    "fix": "biome check --apply ./"
+  },
+  "author": "Eiríkur Fannar Torfason",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "1.7.0",
+    "@types/node": "^20.12.7",
+    "express": "^4.19.2"
+  }
+}
