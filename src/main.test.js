@@ -4,7 +4,7 @@ import { Match } from "./main.js";
 
 describe("match", () => {
 	it("can be instantiated", () => {
-		const match = new Match();
+		const match = new Match({});
 
 		// There are default player names
 		assert.equal(match.player1, "Player 1");
@@ -21,7 +21,7 @@ describe("match", () => {
 	});
 
 	it("updates the points", () => {
-		const match = new Match();
+		const match = new Match({});
 
 		// OK, let's start playing
 		match.registerPoint("player1");
@@ -35,15 +35,32 @@ describe("match", () => {
 	});
 
 	it("resets the points when a game is won", () => {
-		const match = new Match();
+		const match = new Match({});
 
 		// OK, let's start playing
-		match.registerPoint("player1");
-		match.registerPoint("player1");
-		match.registerPoint("player1");
+		match.registerPoints("player1", 3);
 		assert.deepEqual(match.points, [40, 0]);
 		match.registerPoint("player1");
 		assert.deepEqual(match.points, [0, 0]);
 		assert.deepEqual(match.games, [1, 0]);
+	});
+
+	// next up: advantage, which should be configurable
+	it("must be won by two points if ", () => {
+		const match = new Match({ playAdvantage: true });
+
+		// OK, let's start playing
+		match.registerPoints("player1", 3);
+		match.registerPoints("player2", 3);
+		assert.deepEqual(match.points, [40, 40]);
+		match.registerPoint("player1");
+		assert.deepEqual(match.points, ["ADV", 40]);
+		match.registerPoint("player2");
+		assert.deepEqual(match.points, [40, 40]);
+		match.registerPoint("player2");
+		assert.deepEqual(match.points, [40, "ADV"]);
+		match.registerPoint("player2");
+		assert.deepEqual(match.points, [0, 0]);
+		assert.deepEqual(match.games, [0, 1]);
 	});
 });
