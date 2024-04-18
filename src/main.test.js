@@ -17,7 +17,7 @@ describe("match", () => {
 		// To begin with, scores are all zeros
 		assert.deepEqual(match.points, [0, 0]);
 		assert.deepEqual(match.games, [0, 0]);
-		assert.deepEqual(match.sets, [[0, 0]]);
+		assert.deepEqual(match.sets, [0, 0]);
 	});
 
 	it("updates the points", () => {
@@ -46,7 +46,7 @@ describe("match", () => {
 	});
 
 	// next up: advantage, which should be configurable
-	it("must be won by two points if ", () => {
+	it("must be won by two points if advantage is played", () => {
 		const match = new Match({ playAdvantage: true });
 
 		// OK, let's start playing
@@ -62,5 +62,17 @@ describe("match", () => {
 		match.registerPoint("player2");
 		assert.deepEqual(match.points, [0, 0]);
 		assert.deepEqual(match.games, [0, 1]);
+	});
+
+	it("takes 6 games to win a set", () => {
+		const match = new Match({});
+		match.registerPoints("player1", 4 * 5 + 3);
+		assert.deepEqual(match.points, [40, 0]);
+		assert.deepEqual(match.games, [5, 0]);
+		assert.deepEqual(match.sets, [0, 0]);
+		match.registerPoint("player1");
+		assert.deepEqual(match.points, [0, 0]);
+		assert.deepEqual(match.games, [0, 0]);
+		assert.deepEqual(match.sets, [1, 0]);
 	});
 });

@@ -12,6 +12,7 @@ export class Match {
 	/** @type {(string | number)[]} */
 	#points = [0, 0];
 	#games = [0, 0];
+	#sets = [0, 0];
 	#playAdvantage;
 
 	constructor({ playAdvantage = false }) {
@@ -39,6 +40,7 @@ export class Match {
 	#updateScore() {
 		const points = [0, 0];
 		const games = [0, 0];
+		const sets = [0, 0];
 		for (const pid of this.#pointsWon) {
 			const index = pid === "player1" ? 0 : 1;
 			const opponentIndex = (index + 1) % 2;
@@ -55,7 +57,14 @@ export class Match {
 				games[index] += 1;
 				points[0] = points[1] = 0;
 			}
+			const setWon =
+				games[index] >= 6 && games[index] > games[opponentIndex] + 1;
+			if (setWon) {
+				sets[index] += 1;
+				games[0] = games[1] = 0;
+			}
 		}
+		this.#sets = sets;
 		this.#games = games;
 		this.#points = points.map((p) => pointSequence[p]);
 	}
@@ -69,6 +78,6 @@ export class Match {
 	}
 
 	get sets() {
-		return [[0, 0]];
+		return [...this.#sets];
 	}
 }
