@@ -66,12 +66,29 @@ describe("match", () => {
 
 	it("takes 6 games to win a set", () => {
 		const match = new Match({});
+
 		match.registerPoints("player1", 4 * 5 + 3);
 		assert.deepEqual(match.points, [40, 0]);
 		assert.deepEqual(match.games, [5, 0]);
 		assert.deepEqual(match.sets, [0, 0]);
 		match.registerPoint("player1");
 		assert.deepEqual(match.points, [0, 0]);
+		assert.deepEqual(match.games, [0, 0]);
+		assert.deepEqual(match.sets, [1, 0]);
+	});
+
+	it("takes a two game difference to win a set", () => {
+		const match = new Match({});
+
+		match.registerPoints("player1", 4 * 5);
+		match.registerPoints("player2", 4 * 5);
+		assert.deepEqual(match.games, [5, 5]);
+
+		match.registerPoints("player1", 4);
+		assert.deepEqual(match.games, [6, 5]);
+		assert.deepEqual(match.sets, [0, 0]);
+
+		match.registerPoints("player1", 4);
 		assert.deepEqual(match.games, [0, 0]);
 		assert.deepEqual(match.sets, [1, 0]);
 	});
